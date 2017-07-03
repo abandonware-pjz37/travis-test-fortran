@@ -11,6 +11,13 @@ sudo:
 dist:
   - trusty
 
+# Install packages differs for container-based infrastructure
+# * https://docs.travis-ci.com/user/migrating-from-legacy/#How-do-I-install-APT-sources-and-packages%3F
+addons:
+  apt:
+    packages:
+      - gfortran
+
 matrix:
   include:
     - os: linux
@@ -19,6 +26,9 @@ matrix:
 install:
   # Info about OS
   - uname -a
+
+  # Install GCC and gfortran
+  - if [[ "`uname`" == "Darwin" ]]; then travis_retry brew install gcc; fi
 
 script:
   - which gfortran
